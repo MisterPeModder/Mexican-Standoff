@@ -149,7 +149,7 @@ inoremap [ []<esc>i
 inoremap { {}<esc>i
 
 " 42 Header
-source header.vim
+source $HOME/.vim/header.vim
 
 " Extra Whitespace
 augroup whitespacehl
@@ -157,5 +157,5 @@ augroup whitespacehl
 	autocmd Syntax * match ExtraWhitespace / \{2,}/
 augroup END
 
-" Move swap files to .vim/swapfiles
-set directory=$HOME/.vim/swapfiles//
+" Move swap files to .vim
+set directory=$HOME/.vim//
