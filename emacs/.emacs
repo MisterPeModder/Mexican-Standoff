@@ -6,7 +6,7 @@
 ;    By: bspindle <marvin@42.fr>                    +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2017/11/25 10:50:56 by bspindle          #+#    #+#              ;
-;    Updated: 2017/11/26 19:22:36 by bspindle         ###   ########.fr        ;
+;    Updated: 2017/11/26 19:27:54 by bspindle         ###   ########.fr        ;
 ;                                                                              ;
 ;******************************************************************************;
 
@@ -49,7 +49,7 @@
 (defun ft_create_header ()
   "header maker function
   the header is make if there's not a valid header" (interactive)
-  (goto-char -1)
+  (goto-char 1)
   (insert "/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
