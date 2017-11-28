@@ -5,6 +5,12 @@ filetype off
 " Allow text to be removed in insert mode
 set backspace=2
 
+" Tabs that appear 4 spaces wide
+set tabstop=4
+
+" Indents of only one tab
+set shiftwidth=4
+
 " ==PLUGINS==
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
