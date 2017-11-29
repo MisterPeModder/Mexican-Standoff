@@ -6,7 +6,7 @@
 "    By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2017/11/26 17:40:26 by yguaye            #+#    #+#              "
-"    Updated: 2017/11/26 17:40:29 by yguaye           ###   ########.fr        "
+"    Updated: 2017/11/29 10:10:31 by yguaye           ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -159,6 +159,7 @@ endfunction
 " Bind command and shortcut
 command! MexicanHeader call s:mexicanheader()
 nnoremap <c-c>h :MexicanHeader <cr>
+nnoremap <F1> :MexicanHeader <cr>
 
 augroup mexheader
 	autocmd!
