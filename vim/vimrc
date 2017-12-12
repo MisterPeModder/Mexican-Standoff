@@ -38,8 +38,8 @@ colorscheme slate
 
 " Lightline color scheme
 let g:lightline = {
-      \ 'colorscheme': 'seoul256',
-      \ }
+	  \ 'colorscheme': 'seoul256',
+	  \ }
 
 " == NERDTree ==
 
@@ -84,7 +84,7 @@ highlight NERDTreeHelp ctermfg=8
 
 highlight VertSplit ctermfg=0
 highlight SignColomn ctermfg=0
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 
 set cursorline
 highlight CursorLineNR ctermbg=7
@@ -145,16 +145,16 @@ endfunction
 
 augroup autoIndent
 	autocmd!
-	autocmd BufWritePre,BufRead *.[ch] call s:autoindent()
+	autocmd BufWritePre,BufRead *.[ch],*.js,*.json,*.cpp call s:autoindent()
 augroup END
 
 " Comment generation
 nnoremap <leader>c 0i#<esc>0
 augroup comments
 	autocmd!
-	autocmd BufRead *.[ch] nnoremap <buffer> <leader>c 0i/*<esc>$a*/<esc>0
-	autocmd BufRead *.cpp nnoremap <buffer> <leader>c 0i//<esc>0
-	autocmd BufRead *.vim nnoremap <buffer> <leader>c 0i"<esc>0
+	autocmd BufRead *.[ch] nnoremap <buffer> <leader>c 0wi/*<esc>$a*/<esc>0
+	autocmd BufRead *.cpp nnoremap <buffer> <leader>c 0wi//<esc>0
+	autocmd BufRead *.vim nnoremap <buffer> <leader>c 0wi"<esc>0
 augroup END
 
 " Better tab completion
@@ -175,10 +175,12 @@ endfunction
 
 " Create command
 command! CHeader call s:cheader()
-nnoremap <buffer> <leader>h :CHeader<cr>
+nnoremap <leader>h :CHeader<cr>
+
+" Replace space at the begining of a line
+nnoremap <leader>t :silent! %s/^    /	/g<cr>:silent! %s/ \+$//g<cr>:echo "Made cleanup!"<cr>
 
 " == RUSH ==
-
 " Pair creation
 inoremap ( ()<esc>i
 inoremap [ []<esc>i
@@ -188,9 +190,16 @@ inoremap { {}<esc>i
 source $HOME/.vim/header.vim
 
 " Extra Whitespace
+function! s:extrawhitespace()
+	let l:filename = expand("%:t")
+	if strlen(l:filename == 0) && l:filename !~ "^NERD_tree_"
+		match ExtraWhitespace /\(^\([^*/#" ].\+\|\) \{2,}\)\|\( $\)/
+	endif
+endfunction
+
 augroup whitespacehl
-	autocmd!	
-	autocmd Syntax * match ExtraWhitespace / \{2,}/
+	autocmd!
+	autocmd Syntax * call s:extrawhitespace()
 augroup END
 
 " Move swap files to .vim
