@@ -6,7 +6,7 @@
 "    By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2017/11/26 17:40:26 by yguaye            #+#    #+#              "
-"    Updated: 2017/11/29 10:10:31 by yguaye           ###   ########.fr        "
+"    Updated: 2018/01/28 11:16:35 by yguaye           ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -17,7 +17,7 @@ let s:margin	= 5
 
 " File type to comment type mapping
 let s:mapping		= {
-			\'\.c$\|\.h$\|\.cc$\|\.hh$\|\.cpp$\|\.hpp$\|\.php':
+			\'\.c$\|\.cl$\|\.h$\|\.cc$\|\.hh$\|\.cpp$\|\.hpp$\|\.php':
 			\['/*', '*/', '*'],
 			\'\.htm$\|\.html$\|\.xml$':
 			\['<!--', '-->', '*'],

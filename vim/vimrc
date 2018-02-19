@@ -20,7 +20,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'brgmnn/vim-opencl'
 
 call vundle#end()
 filetype plugin indent on
@@ -34,12 +34,12 @@ syntax on
 
 " Cool colors
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=52
-colorscheme slate
+colorscheme koehler
 
 " Lightline color scheme
 let g:lightline = {
-	  \ 'colorscheme': 'seoul256',
-	  \ }
+			\ 'colorscheme': 'seoul256',
+			\ }
 
 " == NERDTree ==
 
@@ -62,10 +62,11 @@ let g:NERDTreeShowHidden=1
 
 " == Syntaxtic ==
 let g:syntastic_c_compiler = 'gcc'
-let g:syntastic_c_compiler_options = '-Wall -Werror -Wextra'
+let g:syntastic_c_compiler_options = '-std=c89 -Wall -Werror -Wextra'
+let g:syntastic_cpp_compiler_options = '-std=c89 -Wall -Werror -Wextra'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
-let g:syntastic_c_check_header = 1
+let g:syntastic_cpp_check_header = 1
 let g:syntastic_c_remove_include_errors = 1
 
 " The Gray Colomn of Death
@@ -139,20 +140,27 @@ vnoremap <leader>' <esc>a'<esc>'<i'<esc>
 " Auto-indent .c & .h files
 function! s:autoindent()
 	let l:pos = getpos(".")
-	normal! gg=G
+	v/^\*\*\|^\*\/\|^\/\*\|\/\//normal! ==
 	call setpos('.', l:pos)
 endfunction
 
+command! Aindent call s:autoindent()
+nnoremap <leader>i :Aindent<cr>
+
 augroup autoIndent
 	autocmd!
-	autocmd BufWritePre,BufRead *.[ch],*.js,*.json,*.cpp call s:autoindent()
+	autocmd BufWritePre,BufRead *.[ch],*.js,*.json,*.cpp,*.cl call s:autoindent()
 augroup END
+
+" Java-style comment generation
+nnoremap <leader>j o/*<cr><esc>d0i** ft_function<cr><esc>d0i**<cr><esc>d0i** @param a<cr><esc>d0i**<cr><esc>d0i** @return<cr>*/
+nnoremap <leader>J O/*<cr><esc>d0i** ft_function<cr><esc>d0i**<cr><esc>d0i** @param a<cr><esc>d0i**<cr><esc>d0i** @return<cr>*/
 
 " Comment generation
 nnoremap <leader>c 0i#<esc>0
 augroup comments
 	autocmd!
-	autocmd BufRead *.[ch] nnoremap <buffer> <leader>c 0wi/*<esc>$a*/<esc>0
+	autocmd BufRead *.[ch],*.cl nnoremap <buffer> <leader>c 0wi/*<esc>$a*/<esc>0
 	autocmd BufRead *.cpp nnoremap <buffer> <leader>c 0wi//<esc>0
 	autocmd BufRead *.vim nnoremap <buffer> <leader>c 0wi"<esc>0
 augroup END
@@ -204,3 +212,12 @@ augroup END
 
 " Move swap files to .vim
 set directory=$HOME/.vim//
+
+" Disable automatic comment insertion
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" this enables "visual" wrapping
+set wrap
+
+" this turns off physical line wrapping (ie: automatic insertion of newlines)
+set textwidth=0 wrapmargin=0
