@@ -34,7 +34,7 @@ syntax on
 
 " Cool colors
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=52
-colorscheme koehler
+colorscheme pablo
 
 " Lightline color scheme
 let g:lightline = {
