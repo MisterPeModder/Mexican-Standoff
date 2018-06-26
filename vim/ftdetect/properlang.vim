@@ -1,1 +1,1 @@
-autocmd BufRead,BufNewFile *.prl set filetype=properlang
+autocmd BufRead,BufNewFile *.properlang,*.prlg,*.prl set filetype=properlang

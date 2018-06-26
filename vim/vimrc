@@ -67,7 +67,7 @@ let g:NERDTreeShowHidden=1
 " == Syntaxtic ==
 let g:syntastic_c_compiler = 'gcc'
 let g:syntastic_c_compiler_options = '-std=c99 -Wall -Werror -Wextra'
-let g:syntastic_cpp_compiler_options = '-std=c99 -Wall -Werror -Wextra'
+let g:syntastic_cpp_compiler_options = '-std=c++1y -Wall -Werror -Wextra'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_c_check_header=1
@@ -99,7 +99,7 @@ highlight PmenuSel ctermfg=Blue ctermbg=Gray
 
 " Show tabs
 set list
-set listchars=tab:⇢-
+set listchars=tab:⇢ 
 highlight SpecialKey ctermfg=8
 
 " Enable mouse
@@ -240,10 +240,10 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " this enables "visual" wrapping
 set wrap
 
-" this turns off physical line wrapping (ie: automatic insertion of newlines)
+" this turns off physical line uwrapping (ie: automatic insertion of newlines)
 set textwidth=0 wrapmargin=0
 
-augroup sql
+augroup sqlbundle/AutoComplPop
 	autocmd!
 	autocmd BufWritePre,BufRead *.sql set filetype=mysql
 augroup END
