@@ -6,7 +6,7 @@
 "    By: yguaye <yguaye@student.42.fr>              +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2018/02/19 17:20:37 by yguaye            #+#    #+#              "
-"    Updated: 2018/02/19 17:31:07 by yguaye           ###   ########.fr        "
+"    Updated: 2018/06/02 14:37:17 by yguaye           ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -32,11 +32,11 @@ syn keyword	prlConditional		if else switch label
 syn keyword	prlRepeat			while for do gen in with
 syn keyword	prlBoolean			true false
 syn keyword	prlConstant			null
-syn keyword	prlTypedef			self owner super
+syn keyword	prlTypedef			self this owner super
 syn keyword	prlOperator			new instanceof
 syn keyword	prlType				bool char byte short int long float double void
 syn keyword	prlStatement		return
-syn keyword	prlStorageClass		static synchronized volatile const final event inner on
+syn keyword	prlStorageClass		static synchronized volatile const final event inner on inline
 syn keyword	prlExceptions		throw try catch finally
 syn keyword	prlAssert			assert
 syn keyword	prlMethodDecl		synchronized throws

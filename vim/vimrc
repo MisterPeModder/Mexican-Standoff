@@ -11,6 +11,8 @@ set tabstop=4
 " Indents of only one tab
 set shiftwidth=4
 
+set noexpandtab
+
 " ==PLUGINS==
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -22,6 +24,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'brgmnn/vim-opencl'
 Plugin 'elzr/vim-json'
+Plugin 'vim-scripts/AutoComplPop'
 
 call vundle#end()
 filetype plugin indent on
@@ -63,12 +66,11 @@ let g:NERDTreeShowHidden=1
 
 " == Syntaxtic ==
 let g:syntastic_c_compiler = 'gcc'
-let g:syntastic_c_compiler_options = '-std=c89 -Wall -Werror -Wextra'
-let g:syntastic_cpp_compiler_options = '-std=c89 -Wall -Werror -Wextra'
+let g:syntastic_c_compiler_options = '-std=c99 -Wall -Werror -Wextra'
+let g:syntastic_cpp_compiler_options = '-std=c99 -Wall -Werror -Wextra'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_c_remove_include_errors = 1
+let g:syntastic_c_check_header=1
 
 " The Gray Colomn of Death
 set cc=80
@@ -86,10 +88,14 @@ highlight NERDTreeHelp ctermfg=8
 
 highlight VertSplit ctermfg=0
 highlight SignColomn ctermfg=0
+
 set fillchars+=vert:\
 
 set cursorline
 highlight CursorLineNR ctermbg=7
+
+highlight Pmenu ctermfg=White ctermbg=DarkGray
+highlight PmenuSel ctermfg=Blue ctermbg=Gray
 
 " Show tabs
 set list
@@ -259,3 +265,6 @@ command! -nargs=+ MapToggle call MapToggle(<f-args>)
 MapToggle <leader>nhl hlsearch
 MapToggle <leader>ps paste
 set pastetoggle=<leader>ps
+
+" Disable hidden string quotes
+set conceallevel=0
