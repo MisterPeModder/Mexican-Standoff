@@ -67,10 +67,13 @@ let g:NERDTreeShowHidden=1
 " == Syntaxtic ==
 let g:syntastic_c_compiler = 'gcc'
 let g:syntastic_c_compiler_options = '-std=c99 -Wall -Werror -Wextra'
-let g:syntastic_cpp_compiler_options = '-std=c++1y -Wall -Werror -Wextra'
+let g:syntastic_cpp_compiler_options = '-std=c++14 -Wall -Werror -Wextra'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
-let g:syntastic_c_check_header=1
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_c_remove_include_errors = 1
+let g:syntastic_nasm_compiler_options = '-f elf64'
+let g:syntastic_java_javac_config_file_enabled = 1
 
 " The Gray Colomn of Death
 set cc=80
@@ -99,6 +102,7 @@ highlight PmenuSel ctermfg=Blue ctermbg=Gray
 
 " Show tabs
 set list
+" set listchars=tab:>-
 set listchars=tab:⇢ 
 highlight SpecialKey ctermfg=8
 
@@ -268,3 +272,180 @@ set pastetoggle=<leader>ps
 
 " Disable hidden string quotes
 set conceallevel=0
+augroup asmoverride
+	autocmd!
+	autocmd BufNewFile,BufRead *.asm,*s set filetype=nasm
+	autocmd BufNewFile,BufRead *.asm,*s set nolist
+set listchars=tab:>-
+highlight SpecialKey ctermfg=8
+
+" Enable mouse
+set mouse=a
+
+" ==MAPPINGS==
+
+let mapleader = "-"
+
+" Toggle NERDTree
+nnoremap <leader>n :NERDTreeToggle<cr>
+" Open .vimrc in a separate tab
+nnoremap <leader>ev :tabedit<cr>:e $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Save and quit
+nnoremap <c-s> :w<cr>
+nnoremap <c-q> :wq<cr>
+nnoremap <leader><c-q> :q!<cr>
+
+" Tab utils
+nnoremap <tab><Up> :tabedit<cr>:call OpenNERDTree()<cr>
+nnoremap <s-tab><Up> :tabedit<cr>
+nnoremap <tab><Right> :tabnext<cr>
+nnoremap <tab><Left> :tabprevious<cr>
+nnoremap <tab><Down> :q<cr>
+
+" Duplicate line
+inoremap <c-d> <esc>yypi
+nnoremap <c-d> yyp
+
+" Uppercase word
+nnoremap <c-u> veU<esc>
+inoremap <c-u> <esc>veU<esc>i
+
+" alt + *
+nnoremap ¨ veu<esc>
+
+" Quoting
+nnoremap <leader>" lbi"<esc>ea"<esc>
+nnoremap <leader>' lbi'<esc>ea'<esc>
+vnoremap <leader>" <esc>a"<esc>'<i"<esc>
+vnoremap <leader>' <esc>a'<esc>'<i'<esc>
+
+" Auto-indent .c & .h files
+function! s:autoindent()
+	let l:pos = getpos(".")
+	v/^\*\*\|^\*\/\|^\/\*\|\/\//normal! ==
+	call setpos('.', l:pos)
+endfunction
+
+command! Aindent call s:autoindent()
+nnoremap <leader>i :Aindent<cr>
+
+augroup autoIndent
+	autocmd!
+	autocmd BufWritePre,BufRead *.[ch],*.js,*.json,*.cpp,*.cl call s:autoindent()
+augroup END
+
+" Java-style comment generation
+nnoremap <leader>j o/*<cr><esc>d0i** ft_function<cr><esc>d0i**<cr><esc>d0i** @param a<cr><esc>d0i**<cr><esc>d0i** @return<cr>*/
+nnoremap <leader>J O/*<cr><esc>d0i** ft_function<cr><esc>d0i**<cr><esc>d0i** @param a<cr><esc>d0i**<cr><esc>d0i** @return<cr>*/
+
+" Comment generation
+nnoremap <leader>c 0i#<esc>0
+augroup comments
+	autocmd!
+	autocmd BufRead *.[ch],*.cl nnoremap <buffer> <leader>c 0wi/*<esc>$a*/<esc>0
+	autocmd BufRead *.cpp nnoremap <buffer> <leader>c 0wi//<esc>0
+	autocmd BufRead *.vim nnoremap <buffer> <leader>c 0wi"<esc>0
+augroup END
+
+" Better tab completion
+set wildmode=longest,list,full
+set wildmenu
+
+" Auto C-style header creation
+function! s:cheader()
+	let l:headername = toupper(substitute(expand("%:t"), "[.]", "_", ""))
+
+	call append(0, '#endif')
+	call append(0, "")
+	call append(0, '# define ' . l:headername)
+	call append(0, '#ifndef ' . l:headername)
+	MexicanHeader
+	normal Gddk
+endfunction
+
+" Create command
+command! CHeader call s:cheader()
+nnoremap <leader>h :CHeader<cr>
+
+" Auto C++ style header creation
+function! s:cppheader()
+	let l:headername = toupper(substitute(expand("%:t"), "[.]", "_", ""))
+
+	call append(0, '#endif //' . l:headername)
+	call append(0, "")
+	call append(0, '# define ' . l:headername)
+	call append(0, '#ifndef ' . l:headername)
+	normal Gddk
+endfunction
+
+" Create command
+command! CPPHeader call s:cppheader()
+
+" Replace space at the begining of a line
+nnoremap <leader>t :silent! %s/^    /	/g<cr>:silent! %s/ \+$//g<cr>:echo "Made cleanup!"<cr>
+
+" == RUSH ==
+" Pair creation
+inoremap ( ()<esc>i
+inoremap [ []<esc>i
+inoremap { {}<esc>i
+
+" 42 Header
+source $HOME/.vim/header.vim
+
+" Extra Whitespace
+function! s:extrawhitespace()
+	let l:filename = expand("%:t")
+	if strlen(l:filename == 0) && l:filename !~ "^NERD_tree_"
+		match ExtraWhitespace /\(^\([^*/#" ].\+\|\) \{2,}\)\|\( $\)/
+	endif
+endfunction
+
+augroup whitespacehl
+	autocmd!
+	autocmd Syntax * call s:extrawhitespace()
+augroup END
+
+" Move swap files to .vim
+set directory=$HOME/.vim//
+
+" Disable automatic comment insertion
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" this enables "visual" wrapping
+set wrap
+
+" this turns off physical line uwrapping (ie: automatic insertion of newlines)
+set textwidth=0 wrapmargin=0
+
+augroup sql
+	autocmd!
+	autocmd BufWritePre,BufRead *.sql set filetype=mysql
+augroup END
+
+command! E e
+command! W w
+command! Q q
+command! WQ wq
+
+" Map key to toggle opt
+function! MapToggle(key, opt)
+	let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<CR>"
+	exec 'nnoremap '.a:key.' '.cmd
+	exec 'inoremap '.a:key." \<C-O>".cmd
+endfunction
+command! -nargs=+ MapToggle call MapToggle(<f-args>)
+
+" Display-altering option toggles
+MapToggle <leader>nhl hlsearch
+MapToggle <leader>ps paste
+set pastetoggle=<leader>ps
+
+augroup asmoverride
+	autocmd!
+	autocmd BufNewFile,BufRead *.asm,*s set filetype=nasm
+	autocmd BufNewFile,BufRead *.asm,*s setlocal nolist
+	autocmd BufNewFile,BufRead *.asm,*s setlocal cc=0
+augroup END
